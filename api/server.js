@@ -7,6 +7,8 @@ import userRoutes from "./routes/userRoutes.js";
 import matchesRoutes from "./routes/matchesRoutes.js";
 import messagesRoutes from "./routes/messagesRoutes.js";
 
+// Database
+import connectDB from "./db/connect.js";
 
 
 dotenv.config();
@@ -24,5 +26,6 @@ app.use("api/messages", messagesRoutes);
 
 app.listen(PORT, () => {
   console.log("Server is running on port" + PORT);
+  connectDB();
 }
 );
