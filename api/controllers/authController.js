@@ -1,4 +1,9 @@
 import User from "../models/userModel.js";
+
+const signToken = (userId) => {
+    return jwt.sign({ userId }, process.env.JWT_SECRET, {
+        expiresIn: "7d",});
+    };
 export const signup = async (req, res) => {
     const { name, email, password, age, gender, genderPreference } = req.body;
 
@@ -26,7 +31,19 @@ export const signup = async (req, res) => {
             gender,
             genderPreference,
         });
-        
+    
+        const token = signToken(newUser._id);
+        res.cookie("jwt", token, {
+            httpOnly: true, // prevents client JS from reading the cookie and XSS attacks
+            maxAge: 7 * 24 * 60 * 60 * 1000, //7 days in milliseconds
+            sameSite:"strict", //prevents CSRF attacks
+            secure: process.env.NODE_ENV === "production" , // cookie will only be set in production
+        }   );
+        res.status(201).json({
+            success: true,
+            message: "User created successfully",
+            user: newUser,
+        });
     }
           catch (error) {
             res.status(500).json({ message: error.message });
