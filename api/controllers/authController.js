@@ -50,5 +50,38 @@ export const signup = async (req, res) => {
             res.status(500).json({ message: error.message });
           }
         };
-export const login = async (req, res) => {};
+export const login = async (req, res) => {
+    const { email, password } = req.body;
+    try {
+        if(!email || !password) {
+            return res.status(400).json({ 
+                success: false,
+                message: "All fields are required"
+             });
+        }
+        const user = await User.findOne({ email });
+        if (!user) {
+            return res.status(400).json({ message: "User not found" });
+        }
+        const isMatch = await user.matchPassword(password);
+        if (!isMatch) {
+            return res.status(400).json({ message: "Invalid credentials" });
+        }
+        const token = signToken(user._id);
+        res.cookie("jwt", token, {
+            httpOnly: true, // prevents client JS from reading the cookie and XSS attacks
+            maxAge: 7 * 24 * 60 * 60 * 1000, //7 days in milliseconds
+            sameSite:"strict", //prevents CSRF attacks
+            secure: process.env.NODE_ENV === "production" , // cookie will only be set in production
+        }   );
+        res.status(200).json({
+            success: true,
+            message: "User logged in successfully",
+            user: user,
+        });
+    } catch (error) {
+        console.error("Error in login controller:", error.message);
+        res.status(500).json({ message: error.message });
+    }
+};
 export const logout = async (req, res) => {};
