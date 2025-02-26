@@ -1,4 +1,4 @@
-import User from "../models/userModel.js";
+import User from "../models/User.js";
 
 const signToken = (userId) => {
     return jwt.sign({ userId }, process.env.JWT_SECRET, {
