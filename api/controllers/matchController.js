@@ -25,4 +25,38 @@ res.status(200).json({
 };
 
 
-export const getUserProfiles = async (req, res) => { };
+export const getUserProfiles = async (req, res) => {
+
+try{
+    const currentUser = await User.findById(req.user.id);
+  const users = await User.find({
+    $and:   [
+        { _id: { $ne: currentUser._id } },
+        { _id: { $nin: currentUser.likes } },
+        { _id: { $nin: currentUser.dislikes } },
+        { _id: { $nin: currentUser.matches } },
+        {
+            gender: {
+                currentUser.genderPreference, === "both"
+                ? { $in: ["male", "female"] }
+                : currentUser.genderPreference,
+            },
+        }
+
+    ],
+})
+    
+
+    
+
+} catch (error) {
+    console.log("Error in getMatches", error);
+
+    res.status(500).json({
+        success: false,
+        message: "Error getting matches - Internal Server Error",
+        error: error.message });
+}
+
+
+ };
