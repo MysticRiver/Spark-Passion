@@ -7,4 +7,11 @@ router.post("/login",login);
 
 router.post("/logout",logout);
 
+router.get("/me,", protectRoute, (req, res) => {
+    res.send({ 
+        success: true,
+        message: "User fetched successfully",   
+        user: req.user });
+});
+
 export default router;
