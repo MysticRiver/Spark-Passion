@@ -13,20 +13,24 @@ export const swipeRight = async (req, res) => {
         }
 
         if(!currentUser.likes.includes(likedUserId)){
-            currentUser.matches.push(userId);
-            otherUser.matches.push(req.user._id);
+            currentUser.matches.push(likedUserId);
             await currentUser.save();
-            await otherUser.save();
-            return res.status(200).json({
-                success: true,
-                message: "It's a match!",
-            });
+            
+//Check if the liked user has liked the current user
+        if (likedUser.likes.includes(currentUser.id)){
+            currentUser.matches.push(likedUserId);
+            likedUser.matches.push(currentUser.id);
+            await Promise.All([
+            await currentUser.save(),
+            await likedUser.save()
+        ]);}
         }
-
+        //TO Do Send notification if it is a match using Socket.io
         currentUser.likes.push(userId);
         await currentUser.save();
         return res.status(200).json({
             success: true,
+            user: currentUser,
             message: "User liked successfully",
         });
     } catch (error) {
