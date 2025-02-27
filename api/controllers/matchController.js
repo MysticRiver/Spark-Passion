@@ -38,7 +38,45 @@ export const swipeRight = async (req, res) => {
         });
     }
 };
-export const swipeLeft = async (req, res) => { };
+export const swipeLeft = async (req, res) => { 
+
+    try {
+        const {dislikedUserId} = req.params;
+        const currentUser = await User.findById(req.user.id);
+        const dislikedUser = await User.findById(dislikedUserId);
+
+        if (!currentUser.dislikes.includes(dislikedUserId)){
+            currentUser.dislikes.push(dislikedUserId);
+            await currentUser.save();
+            return res.status(200).json({
+                success: true,
+                message: "User disliked successfully",
+            });
+        }
+
+        if(!dislikedUser){
+            return res.status(404).json({
+                success: false,
+                message: "User not found",
+            });
+        }
+
+        currentUser.dislikes.push(dislikedUserId);
+        await currentUser.save();
+        return res.status(200).json({
+            success: true,
+            user: currentUser,
+            message: "User disliked successfully",
+        });
+    } catch (error) {
+        console.log("Error in swipeLeft", error);
+        res.status(500).json({
+            success: false,
+            message: "Error in swipeLeft - Internal Server Error",
+            error: error.message,
+        });
+    }
+};
 
 
 export const getMatches = async (req, res) => { 
