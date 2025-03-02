@@ -22,6 +22,8 @@ useEffect(()=>{
 				<Route path='/profile' element={<ProfilePage />} />
         <Route path='/chat/:id' element={<MessagePage />} />
 			</Routes>
+
+      <Toaster />
     </div>
      
     </>
