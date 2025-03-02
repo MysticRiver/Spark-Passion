@@ -3,8 +3,15 @@ import HomePage from './pages/HomePage'
 import AuthPage from './pages/AuthPage'
 import ProfilePage from './pages/ProfilePage'
 import MessagePage from './pages/MessagePage'
+import { useAuthStore } from './store/useAuthStore'
+import { useEffect } from 'react'
 function App() {
   
+const {checkAuth}=useAuthStore()
+
+useEffect(()=>{
+  checkAuth();
+},[checkAuth]);
 
   return (
     <>
