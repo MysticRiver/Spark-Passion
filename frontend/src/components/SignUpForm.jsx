@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useAuthStore } from '../store/useAuthStore';
 
 const SignUpForm = () => {
     const [name, setName] = useState("");
@@ -12,6 +13,7 @@ const SignUpForm = () => {
     const signup = () => {
         alert('Sign up form submitted');
     }
+    const { authUserName, authUserLastName } = useAuthStore();
 
   return (
     <form
@@ -34,6 +36,7 @@ const SignUpForm = () => {
 						required
 						value={name}
 						onChange={(e) => setName(e.target.value)}
+                        autoComplete="name"
 						className='appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-pink-500 focus:border-pink-500 sm:text-sm'
 					/>
 				</div>
@@ -99,8 +102,8 @@ const SignUpForm = () => {
 
 			{/* GENDER */}
 			<div>
-				<label className='block text-sm font-medium text-gray-700'>Your Gender</label>
-				<div className='mt-2 flex gap-2'>
+				<label htmlFor='male' className='block text-sm font-medium text-gray-700'>Your Gender</label>
+				<div  className='mt-2 flex gap-2'>
 					<div className='flex items-center'>
 						<input
 							id='male'
@@ -132,7 +135,7 @@ const SignUpForm = () => {
 
 			{/* GENDER PREFERENCE */}
 			<div>
-				<label className='block text-sm font-medium text-gray-700'>Prefer Me</label>
+				<label htmlFor='prefer-male'className='block text-sm font-medium text-gray-700'>Preferred Match</label>
 				<div className='mt-2 space-y-2'>
 					<div className='flex items-center'>
 						<input
