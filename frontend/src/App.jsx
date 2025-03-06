@@ -3,8 +3,17 @@ import HomePage from './pages/HomePage'
 import AuthPage from './pages/AuthPage'
 import ProfilePage from './pages/ProfilePage'
 import MessagePage from './pages/MessagePage'
+import { useAuthStore } from "./store/useAuthStore";
+import { useEffect } from "react";
+import { Toaster } from "react-hot-toast";
 function App() {
-  
+  const { checkAuth, authUser, checkingAuth } = useAuthStore();
+
+	useEffect(() => {
+		checkAuth();
+	}, [checkAuth]);
+
+	if (checkingAuth) return null;
 
   return (
     <>
