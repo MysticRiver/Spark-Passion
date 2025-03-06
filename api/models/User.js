@@ -23,36 +23,37 @@ const userSchema = new mongoose.Schema(
     gender: {
       type: String,
       required: true,
-      enum: ["Male", "Female", "Other"],
+      enum: ["male", "female"],
     },
     genderPreference: {
       type: String,
       required: true,
-      enum: ["Male", "Female", "both"],
+      enum: ["male", "female", "both"],
     },
-    bio: {
-      type: String,
-      default: "",
-    },
-      
-    profilePicture: {
-      type: String,
-      default: "",
-    },
-    likes: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
-    },
-    dislikes: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
-    },
-    matches: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
-    },
-    }, {timestamps:true},
+    bio: { type: String, default: "" },
+    image: { type: String, default: "" },
+    likes: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
+    dislikes: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
+    matches: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
+  },
+  { timestamps: true }
 );
+
 
 userSchema.pre("save", async function (next) {
   if (!this.isModified("password")) {
