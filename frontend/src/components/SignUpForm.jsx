@@ -8,12 +8,9 @@ const SignUpForm = () => {
 	const [gender, setGender] = useState("");
 	const [age, setAge] = useState("");
 	const [genderPreference, setGenderPreference] = useState("");
-    const [loading, setLoading] = useState(false);
+    
 
-    const signup = () => {
-        alert('Sign up form submitted');
-    }
-    const { authUserName, authUserLastName } = useAuthStore();
+    const {signup, loading}= useAuthStore();
 
   return (
     <form
